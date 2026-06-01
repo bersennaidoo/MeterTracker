@@ -1,0 +1,170 @@
+@model ReadingReport?
+@{
+    ViewData["Title"] = "Usage Report";
+}
+
+<div class="page-header">
+    <h1>Usage Report</h1>
+</div>
+
+@if (ViewBag.NeedMoreReadings == true || Model == null)
+{
+    <div class="empty-state">
+        <div class="empty-icon">📋</div>
+        <p>A usage report requires at least two readings.</p>
+        <p>Add another reading and the report will be calculated automatically.</p>
+        <a asp-action="Create" class="btn btn-primary">+ Add Reading</a>
+        <a asp-action="Index" class="btn btn-secondary">All Readings</a>
+    </div>
+}
+else
+{
+    <!-- Period Summary -->
+    <div class="report-period">
+        <div class="period-item">
+            <span class="period-label">From</span>
+            <span class="period-value">@Model.Previous.ReadingDate.ToString("dd MMM yyyy")</span>
+        </div>
+        <div class="period-arrow">→</div>
+        <div class="period-item">
+            <span class="period-label">To</span>
+            <span class="period-value">@Model.Current.ReadingDate.ToString("dd MMM yyyy")</span>
+        </div>
+        <div class="period-item period-days">
+            <span class="period-label">Duration</span>
+            <span class="period-value">@Model.DaysBetween day@(Model.DaysBetween == 1 ? "" : "s")</span>
+        </div>
+    </div>
+
+    <div class="notice notice-info">
+        All water usage values are in <strong>Litres (L)</strong>. Electricity in <strong>kWh</strong>.
+    </div>
+
+    <!-- Main Water -->
+    <div class="report-section">
+        <h2 class="section-title">💧 Main Water</h2>
+        <div class="stat-grid">
+            <div class="stat-card">
+                <div class="stat-label">Previous Reading</div>
+                <div class="stat-value">@Model.Previous.MainWaterUp.ToString("N3") L</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Current Reading</div>
+                <div class="stat-value">@Model.Current.MainWaterUp.ToString("N3") L</div>
+            </div>
+            <div class="stat-card stat-highlight">
+                <div class="stat-label">Usage</div>
+                <div class="stat-value">@Model.MainWaterUsage.ToString("N3") L</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Prepaid Meter 1 -->
+    <div class="report-section">
+        <h2 class="section-title">🔵 Prepaid Meter 1</h2>
+        <div class="stat-grid">
+            <div class="stat-card">
+                <div class="stat-label">Up Usage (BR2)</div>
+                <div class="stat-value">@Model.Prepaid1UpUsage.ToString("N3") L</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Top-up Applied (BR4)</div>
+                <div class="stat-value">@Model.Current.Prepaid1TopUp.ToString("N3") L</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Down Usage (BR3+BR4)</div>
+                <div class="stat-value">@Model.Prepaid1DownUsage.ToString("N3") L</div>
+            </div>
+            <div class="stat-card @(Model.Prepaid1LossOrGain == 0 ? "stat-balanced" : Model.Prepaid1LossOrGain > 0 ? "stat-loss" : "stat-gain")">
+                <div class="stat-label">Loss / Gain (BR5)</div>
+                <div class="stat-value">
+                    @if (Model.Prepaid1LossOrGain == 0)
+                    {
+                        <span class="badge badge-balanced">✓ Balanced</span>
+                    }
+                    else if (Model.Prepaid1LossOrGain > 0)
+                    {
+                        <span class="badge badge-loss">⚠ Loss @Model.Prepaid1LossOrGain.ToString("N3") L</span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-gain">↑ Gain @(Math.Abs(Model.Prepaid1LossOrGain).ToString("N3")) L</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Prepaid Meter 2 -->
+    <div class="report-section">
+        <h2 class="section-title">🟢 Prepaid Meter 2</h2>
+        <div class="stat-grid">
+            <div class="stat-card">
+                <div class="stat-label">Up Usage (BR2)</div>
+                <div class="stat-value">@Model.Prepaid2UpUsage.ToString("N3") L</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Top-up Applied (BR4)</div>
+                <div class="stat-value">@Model.Current.Prepaid2TopUp.ToString("N3") L</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Down Usage (BR3+BR4)</div>
+                <div class="stat-value">@Model.Prepaid2DownUsage.ToString("N3") L</div>
+            </div>
+            <div class="stat-card @(Model.Prepaid2LossOrGain == 0 ? "stat-balanced" : Model.Prepaid2LossOrGain > 0 ? "stat-loss" : "stat-gain")">
+                <div class="stat-label">Loss / Gain (BR5)</div>
+                <div class="stat-value">
+                    @if (Model.Prepaid2LossOrGain == 0)
+                    {
+                        <span class="badge badge-balanced">✓ Balanced</span>
+                    }
+                    else if (Model.Prepaid2LossOrGain > 0)
+                    {
+                        <span class="badge badge-loss">⚠ Loss @Model.Prepaid2LossOrGain.ToString("N3") L</span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-gain">↑ Gain @(Math.Abs(Model.Prepaid2LossOrGain).ToString("N3")) L</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Other Usage -->
+    <div class="report-section">
+        <h2 class="section-title">🔧 Other Usage <small>(BR6: Main − P1 − P2)</small></h2>
+        <div class="stat-grid">
+            <div class="stat-card stat-highlight">
+                <div class="stat-label">Other Usage</div>
+                <div class="stat-value">@Model.OtherUsage.ToString("N3") L</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Electricity -->
+    <div class="report-section">
+        <h2 class="section-title">⚡ Electricity</h2>
+        <div class="stat-grid">
+            <div class="stat-card">
+                <div class="stat-label">Previous Reading</div>
+                <div class="stat-value">@Model.Previous.ElectricityUp.ToString("N3") kWh</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Current Reading</div>
+                <div class="stat-value">@Model.Current.ElectricityUp.ToString("N3") kWh</div>
+            </div>
+            <div class="stat-card stat-highlight">
+                <div class="stat-label">Usage</div>
+                <div class="stat-value">@Model.ElectricityUsage.ToString("N3") kWh</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="report-actions">
+        <a asp-action="Create" class="btn btn-primary btn-large">+ Enter Next Reading</a>
+        <a asp-controller="Pdf" asp-action="Report" asp-route-id="@Model.Current.Id"
+           class="btn btn-pdf" target="_blank">⬇ Export PDF</a>
+        <a asp-action="Index" class="btn btn-secondary">All Readings</a>
+    </div>
+}

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] – Meter Tracker</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-inner">
+            <a class="brand" asp-controller="Readings" asp-action="Index">⚡ Meter Tracker</a>
+            <nav>
+                <a asp-controller="Readings" asp-action="Index">All Readings</a>
+                <a asp-controller="Readings" asp-action="Create" class="btn-nav">+ New Reading</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        @RenderBody()
+    </main>
+
+    <footer class="site-footer">
+        <p>Meter Tracker — all fields mandatory per BR7</p>
+    </footer>
+</body>
+</html>

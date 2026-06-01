@@ -1,0 +1,33 @@
+@model Reading
+@{
+    ViewData["Title"] = "Delete Reading";
+}
+
+<div class="page-header">
+    <h1>Delete Reading</h1>
+</div>
+
+<div class="notice notice-warning">
+    ⚠️ Are you sure you want to delete the reading for <strong>@Model.ReadingDate.ToString("dd MMM yyyy")</strong>?
+    This action cannot be undone.
+</div>
+
+<div class="detail-card">
+    <table class="detail-table">
+        <tr><th>Date</th><td>@Model.ReadingDate.ToString("dd MMM yyyy")</td></tr>
+        <tr><th>Main Water Up</th><td>@Model.MainWaterUp.ToString("N3") L</td></tr>
+        <tr><th>Prepaid 1 Up</th><td>@Model.Prepaid1Up.ToString("N3") L</td></tr>
+        <tr><th>Prepaid 1 Down</th><td>@Model.Prepaid1Down.ToString("N3") L</td></tr>
+        <tr><th>Prepaid 1 Top-up</th><td>@Model.Prepaid1TopUp.ToString("N3") L</td></tr>
+        <tr><th>Prepaid 2 Up</th><td>@Model.Prepaid2Up.ToString("N3") L</td></tr>
+        <tr><th>Prepaid 2 Down</th><td>@Model.Prepaid2Down.ToString("N3") L</td></tr>
+        <tr><th>Prepaid 2 Top-up</th><td>@Model.Prepaid2TopUp.ToString("N3") L</td></tr>
+        <tr><th>Electricity Up</th><td>@Model.ElectricityUp.ToString("N3") kWh</td></tr>
+    </table>
+</div>
+
+<form asp-action="Delete" method="post" class="form-actions">
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
