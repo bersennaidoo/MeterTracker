@@ -296,3 +296,4 @@
 /home/bersen/dotnetproj/claude2/MeterTracker/obj/Debug/net10.0/MeterTracker.pdb
 /home/bersen/dotnetproj/claude2/MeterTracker/obj/Debug/net10.0/MeterTracker.genruntimeconfig.cache
 /home/bersen/dotnetproj/claude2/MeterTracker/obj/Debug/net10.0/ref/MeterTracker.dll
+/home/bersen/dotnetproj/claude2/MeterTracker/obj/Debug/net10.0/MeterTracker.sourcelink.json

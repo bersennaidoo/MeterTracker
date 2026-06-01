@@ -20,21 +20,6 @@ Open the URL printed in the terminal (e.g. `http://localhost:5000`).
 The SQLite database `metertracker.db` is created automatically in the project
 folder on first run. Copy it at any time for a backup.
 
-## Run Tests
-
-```bash
-cd MeterTracker.Tests
-dotnet test
-```
-
-Or from the solution root:
-
-```bash
-dotnet test MeterTracker.sln
-```
-
-The test suite covers all 8 business rules (BR1–BR8) and PDF generation.
-
 ## First Use
 
 1. Click **+ New Reading** and enter your first complete set of meter values.
